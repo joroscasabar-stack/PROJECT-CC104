@@ -1,1 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ Data Structure Activities</title>
 
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 24px 14px 40px;
+    background: #ffffff;
+    color: #202938;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.page-header {
+    text-align: center;
+    margin: 8px 0 28px;
+}
+
+.page-header h1 {
+    color: #1769aa;
+    font-size: clamp(25px, 5vw, 36px);
+}
+
+.page-header p { color: #64748b; }
+
+.activity-box {
+    margin: 22px 0;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #d8e1ec;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, .08);
+}
+
+.activity-title {
+    color: #1769aa;
+    border-bottom: 2px solid #e6eef7;
+    padding-bottom: 12px;
+    font-size: 22px;
+}
+
+.section-title {
+    margin: 18px 0 9px;
+    font-size: 16px;
+    color: #334155;
+}
+
+.code-box, .output-box {
+    padding: 15px;
+    border: 1px solid #dce3eb;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.code-box {
+    background: #f5f7fa;
+    border-left: 5px solid #1769aa;
+}
+
+.output-box {
+    margin-top: 16px;
+    background: #fbfffc;
+    border-color: #cce8d4;
+    border-left: 5px solid #28a745;
+}
+
+.output-box .section-title {
+    color: #218838;
+    margin-top: 0;
+}
+
+pre {
+    margin: 0;
+    color: #263445;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre;
+    tab-size: 4;
+}
+
+.note {
+    color: #64748b;
+    font-size: 13px;
+    margin: 20px 2px 0;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    body { padding: 16px 10px 28px; }
+    .activity-box { padding: 14px; border-radius: 12px; }
+    pre { font-size: 12px; }
+}
+</style>
+</head>
+
+<body>
+<main class="container">
+
+<header class="page-header">
+    <h1>C++ Data Structure Activities</h1>
+    <p>Linked Lists and Queues: Source Code and Sample Console Output</p>
+</header>
+
+<!-- ACTIVITY 1 -->
+<section class="activity-box">
+<h2 class="activity-title">Activity 1: Singly Linked List</h2>
+<h3 class="section-title">C++ Code</h3>
+
+<div class="code-box"><pre>#include &lt;iostream&gt;
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node* head = nullptr;
+
+void insert(int value) {
+    Node* newNode = new Node{value, nullptr};
+
+    if (head == nullptr) {
+        head = newNode;
+        return;
+    }
+
+    Node* current = head;
+    while (current-&gt;next != nullptr) {
+        current = current-&gt;next;
+    }
+    current-&gt;next = newNode;
+}
+
+void display() {
+    Node* current = head;
+    while (current != nullptr) {
+        cout &lt;&lt; current-&gt;data &lt;&lt; " -&gt; ";
+        current = current-&gt;next;
+    }
+    cout &lt;&lt; "NULL" &lt;&lt; endl;
+}
+
+bool search(int value) {
+    Node* current = head;
+    while (current != nullptr) {
+        if (current-&gt;data == value) {
+            return true;
+        }
+        current = current-&gt;next;
+    }
+    return false;
+}
+
+void remove(int value) {
+    if (head == nullptr) return;
+
+    if (head-&gt;data == value) {
+        Node* temp = head;
+        head = head-&gt;next;
+        delete temp;
+        return;
+    }
+
+    Node* current = head;
+    while (current-&gt;next != nullptr &amp;&amp;
+           current-&gt;next-&gt;data != value) {
+        current = current-&gt;next;
+    }
+
+    if (current-&gt;next != nullptr) {
+        Node* temp = current-&gt;next;
+        current-&gt;next = temp-&gt;next;
+        delete temp;
+    }
+}
+
+int main() {
+    int id;
+
+    cout &lt;&lt; "Enter 5 Student IDs:" &lt;&lt; endl;
+    for (int i = 0; i &lt; 5; i++) {
+        cin &gt;&gt; id;
+        insert(id);
+    }
+
+    cout &lt;&lt; "\nLinked List: ";
+    display();
+
+    cout &lt;&lt; "Enter ID to search: ";
+    cin &gt;&gt; id;
+
+    if (search(id)) {
+        cout &lt;&lt; id &lt;&lt; " found in the list." &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; id &lt;&lt; " not found in the list." &lt;&lt; endl;
+    }
+
+    cout &lt;&lt; "Enter ID to delete: ";
+    cin &gt;&gt; id;
+    remove(id);
+
+    cout &lt;&lt; "Updated Linked List: ";
+    display();
+
+    return 0;
+}</pre></div>
+
+<div class="output-box">
+<h3 class="section-title">Sample Output</h3>
+<pre>Enter 5 Student IDs:
+101
+102
+103
+104
+105
+
+Linked List: 101 -&gt; 102 -&gt; 103 -&gt; 104 -&gt; 105 -&gt; NULL
+Enter ID to search: 103
+103 found in the list.
+Enter ID to delete: 103
+Updated Linked List: 101 -&gt; 102 -&gt; 104 -&gt; 105 -&gt; NULL</pre>
+</div>
+</section>
+
+<!-- ACTIVITY 2 -->
+<section class="activity-box">
+<h2 class="activity-title">Activity 2: Doubly Linked List</h2>
+<h3 class="section-title">C++ Code</h3>
+
+<div class="code-box"><pre>#include &lt;iostream&gt;
+using namespace std;
+
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+};
+
+Node* head = nullptr;
+Node* tail = nullptr;
+
+void insert(int value) {
+    Node* newNode = new Node{value, nullptr, nullptr};
+
+    if (head == nullptr) {
+        head = tail = newNode;
+    } else {
+        tail-&gt;next = newNode;
+        newNode-&gt;prev = tail;
+        tail = newNode;
+    }
+}
+
+void displayForward() {
+    Node* current = head;
+    while (current != nullptr) {
+        cout &lt;&lt; current-&gt;data &lt;&lt; " ";
+        current = current-&gt;next;
+    }
+    cout &lt;&lt; endl;
+}
+
+void displayBackward() {
+    Node* current = tail;
+    while (current != nullptr) {
+        cout &lt;&lt; current-&gt;data &lt;&lt; " ";
+        current = current-&gt;prev;
+    }
+    cout &lt;&lt; endl;
+}
+
+bool searchValue(int value) {
+    Node* current = head;
+    while (current != nullptr) {
+        if (current-&gt;data == value) return true;
+        current = current-&gt;next;
+    }
+    return false;
+}
+
+void updateValue(int oldValue, int newValue) {
+    Node* current = head;
+    while (current != nullptr) {
+        if (current-&gt;data == oldValue) {
+            current-&gt;data = newValue;
+            return;
+        }
+        current = current-&gt;next;
+    }
+}
+
+void deleteValue(int value) {
+    Node* current = head;
+
+    while (current != nullptr &amp;&amp; current-&gt;data != value) {
+        current = current-&gt;next;
+    }
+    if (current == nullptr) return;
+
+    if (current-&gt;prev != nullptr) {
+        current-&gt;prev-&gt;next = current-&gt;next;
+    } else {
+        head = current-&gt;next;
+    }
+
+    if (current-&gt;next != nullptr) {
+        current-&gt;next-&gt;prev = current-&gt;prev;
+    } else {
+        tail = current-&gt;prev;
+    }
+
+    delete current;
+}
+
+int main() {
+    int value, oldValue, newValue;
+
+    cout &lt;&lt; "Enter 5 numbers:" &lt;&lt; endl;
+    for (int i = 0; i &lt; 5; i++) {
+        cin &gt;&gt; value;
+        insert(value);
+    }
+
+    cout &lt;&lt; "\nForward: ";
+    displayForward();
+    cout &lt;&lt; "Backward: ";
+    displayBackward();
+
+    cout &lt;&lt; "Enter value to search: ";
+    cin &gt;&gt; value;
+
+    if (searchValue(value)) {
+        cout &lt;&lt; value &lt;&lt; " found in the list." &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; value &lt;&lt; " not found in the list." &lt;&lt; endl;
+    }
+
+    cout &lt;&lt; "Enter value to update: ";
+    cin &gt;&gt; oldValue;
+    cout &lt;&lt; "Enter new value: ";
+    cin &gt;&gt; newValue;
+    updateValue(oldValue, newValue);
+
+    cout &lt;&lt; "Updated list (forward): ";
+    displayForward();
+
+    cout &lt;&lt; "Enter value to delete: ";
+    cin &gt;&gt; value;
+    deleteValue(value);
+
+    cout &lt;&lt; "Final list (forward): ";
+    displayForward();
+    cout &lt;&lt; "Final list (backward): ";
+    displayBackward();
+
+    return 0;
+}</pre></div>
+
+<div class="output-box">
+<h3 class="section-title">Sample Output</h3>
+<pre>Enter 5 numbers:
+10
+20
+30
+40
+50
+
+Forward: 10 20 30 40 50
+Backward: 50 40 30 20 10
+Enter value to search: 30
+30 found in the list.
+Enter value to update: 30
+Enter new value: 35
+Updated list (forward): 10 20 35 40 50
+Enter value to delete: 40
+Final list (forward): 10 20 35 50
+Final list (backward): 50 35 20 10</pre>
+</div>
+</section>
+
+<!-- ACTIVITY 3 -->
+<section class="activity-box">
+<h2 class="activity-title">Activity 3: Linear, Circular, and Priority Queues</h2>
+<p>Three independent queue types with enqueue, dequeue, peek, and display operations.</p>
+
+<h3 class="section-title">C++ Code</h3>
+<div class="code-box"><pre>#include &lt;iostream&gt;
+using namespace std;
+
+const int MAX = 5;
+
+// INDEPENDENT QUEUES
+int linearQ[MAX];
+int linearFront = 0;
+int linearRear = -1;
+
+int circularQ[MAX];
+int circularFront = 0;
+int circularRear = -1;
+int circularCount = 0;
+
+int priorityQ[MAX];
+int priorityFront = 0;
+int priorityRear = -1;
+
+// LINEAR QUEUE
+void createLinear() {
+    linearFront = 0;
+    linearRear = -1;
+
+    cout &lt;&lt; "\n===== LINEAR QUEUE =====\n";
+    cout &lt;&lt; "Enter 5 numbers:\n";
+
+    for (int i = 0; i &lt; MAX; i++) {
+        cin &gt;&gt; linearQ[++linearRear];
+    }
+
+    cout &lt;&lt; "5 numbers successfully entered!\n";
+}
+
+void displayLinear() {
+    if (linearRear &lt; linearFront) {
+        cout &lt;&lt; "Queue Empty!\n";
+        return;
+    }
+
+    cout &lt;&lt; "Queue: ";
+    for (int i = linearFront; i &lt;= linearRear; i++) {
+        cout &lt;&lt; linearQ[i] &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+}
+
+void dequeueLinear() {
+    if (linearRear &lt; linearFront) {
+        cout &lt;&lt; "Queue Empty!\n";
+        return;
+    }
+
+    cout &lt;&lt; "Removed: " &lt;&lt; linearQ[linearFront] &lt;&lt; endl;
+
+    for (int i = linearFront; i &lt; linearRear; i++) {
+        linearQ[i] = linearQ[i + 1];
+    }
+
+    linearRear--;
+
+    if (linearRear &lt; linearFront) {
+        linearFront = 0;
+        linearRear = -1;
+    }
+}
+
+void enqueueLinear(int x) {
+    if (linearRear == MAX - 1) {
+        cout &lt;&lt; "Queue Full!\n";
+        return;
+    }
+
+    linearQ[++linearRear] = x;
+    cout &lt;&lt; "Added: " &lt;&lt; x &lt;&lt; endl;
+}
+
+void peekLinear() {
+    if (linearRear &lt; linearFront) {
+        cout &lt;&lt; "Queue Empty!\n";
+    } else {
+        cout &lt;&lt; "Front: " &lt;&lt; linearQ[linearFront] &lt;&lt; endl;
+    }
+}
+
+// CIRCULAR QUEUE
+void createCircular() {
+    circularFront = 0;
+    circularRear = -1;
+    circularCount = 0;
+
+    cout &lt;&lt; "\n===== CIRCULAR QUEUE =====\n";
+    cout &lt;&lt; "Enter 5 numbers:\n";
+
+    for (int i = 0; i &lt; MAX; i++) {
+        int x;
+        cin &gt;&gt; x;
+
+        circularRear = (circularRear + 1) % MAX;
+        circularQ[circularRear] = x;
+        circularCount++;
+    }
+
+    cout &lt;&lt; "5 numbers successfully entered!\n";
+}
+
+void displayCircular() {
+    if (circularCount == 0) {
+        cout &lt;&lt; "Queue Empty!\n";
+        return;
+    }
+
+    cout &lt;&lt; "Queue: ";
+    for (int i = 0; i &lt; circularCount; i++) {
+        int index = (circularFront + i) % MAX;
+        cout &lt;&lt; circularQ[index] &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+}
+
+void dequeueCircular() {
+    if (circularCount == 0) {
+        cout &lt;&lt; "Queue Empty!\n";
+        return;
+    }
+
+    cout &lt;&lt; "Removed: " &lt;&lt; circularQ[circularFront] &lt;&lt; endl;
+    circularFront = (circularFront + 1) % MAX;
+    circularCount--;
+}
+
+void enqueueCircular(int x) {
+    if (circularCount == MAX) {
+        cout &lt;&lt; "Queue Full!\n";
+        return;
+    }
+
+    circularRear = (circularRear + 1) % MAX;
+    circularQ[circularRear] = x;
+    circularCount++;
+
+    cout &lt;&lt; "Added: " &lt;&lt; x &lt;&lt; endl;
+}
+
+void peekCircular() {
+    if (circularCount == 0) {
+        cout &lt;&lt; "Queue Empty!\n";
+    } else {
+        cout &lt;&lt; "Front: " &lt;&lt; circularQ[circularFront] &lt;&lt; endl;
+    }
+}
+
+// PRIORITY QUEUE
+// Larger number = higher priority
+void createPriority() {
+    priorityFront = 0;
+    priorityRear = -1;
+
+    cout &lt;&lt; "\n===== PRIORITY QUEUE =====\n";
+    cout &lt;&lt; "Enter 5 numbers:\n";
+
+    for (int i = 0; i &lt; MAX; i++) {
+        int x;
+        cin &gt;&gt; x;
+
+        int j = priorityRear;
+
+        while (j &gt;= 0 &amp;&amp; priorityQ[j] &lt; x) {
+            priorityQ[j + 1] = priorityQ[j];
+            j--;
+        }
+
+        priorityQ[j + 1] = x;
+        priorityRear++;
+    }
+
+    cout &lt;&lt; "5 numbers successfully entered!\n";
+}
+
+void displayPriority() {
+    if (priorityRear &lt; priorityFront) {
+        cout &lt;&lt; "Queue Empty!\n";
+        return;
+    }
+
+    cout &lt;&lt; "Priority Queue: ";
+    for (int i = priorityFront; i &lt;= priorityRear; i++) {
+        cout &lt;&lt; priorityQ[i] &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+}
+
+void dequeuePriority() {
+    if (priorityRear &lt; priorityFront) {
+        cout &lt;&lt; "Queue Empty!\n";
+        return;
+    }
+
+    cout &lt;&lt; "Removed: " &lt;&lt; priorityQ[0] &lt;&lt; endl;
+
+    for (int i = 0; i &lt; priorityRear; i++) {
+        priorityQ[i] = priorityQ[i + 1];
+    }
+
+    priorityRear--;
+
+    if (priorityRear &lt; priorityFront) {
+        priorityFront = 0;
+        priorityRear = -1;
+    }
+}
+
+void enqueuePriority(int x) {
+    if (priorityRear == MAX - 1) {
+        cout &lt;&lt; "Queue Full!\n";
+        return;
+    }
+
+    int j = priorityRear;
+
+    while (j &gt;= 0 &amp;&amp; priorityQ[j] &lt; x) {
+        priorityQ[j + 1] = priorityQ[j];
+        j--;
+    }
+
+    priorityQ[j + 1] = x;
+    priorityRear++;
+
+    cout &lt;&lt; "Added: " &lt;&lt; x &lt;&lt; endl;
+}
+
+void peekPriority() {
+    if (priorityRear &lt; priorityFront) {
+        cout &lt;&lt; "Queue Empty!\n";
+    } else {
+        cout &lt;&lt; "Highest Priority: " &lt;&lt; priorityQ[0] &lt;&lt; endl;
+    }
+}
+
+// LINEAR QUEUE MENU
+void linearMenu() {
+    int choice, num;
+
+    do {
+        cout &lt;&lt; "\n================================\n";
+        cout &lt;&lt; "        LINEAR QUEUE\n";
+        cout &lt;&lt; "================================\n";
+        cout &lt;&lt; "1. Enqueue\n2. Dequeue\n3. Peek\n4. Display\n5. Back to Queue Selection\n";
+        cout &lt;&lt; "================================\nChoice: ";
+        cin &gt;&gt; choice;
+
+        switch (choice) {
+            case 1:
+                cout &lt;&lt; "Enter number: ";
+                cin &gt;&gt; num;
+                enqueueLinear(num);
+                break;
+            case 2: dequeueLinear(); break;
+            case 3: peekLinear(); break;
+            case 4: displayLinear(); break;
+            case 5: cout &lt;&lt; "\nReturning to Queue Selection...\n"; break;
+            default: cout &lt;&lt; "Invalid Choice!\n";
+        }
+    } while (choice != 5);
+}
+
+// CIRCULAR QUEUE MENU
+void circularMenu() {
+    int choice, num;
+
+    do {
+        cout &lt;&lt; "\n================================\n";
+        cout &lt;&lt; "       CIRCULAR QUEUE\n";
+        cout &lt;&lt; "================================\n";
+        cout &lt;&lt; "1. Enqueue\n2. Dequeue\n3. Peek\n4. Display\n5. Back to Queue Selection\n";
+        cout &lt;&lt; "================================\nChoice: ";
+        cin &gt;&gt; choice;
+
+        switch (choice) {
+            case 1:
+                cout &lt;&lt; "Enter number: ";
+                cin &gt;&gt; num;
+                enqueueCircular(num);
+                break;
+            case 2: dequeueCircular(); break;
+            case 3: peekCircular(); break;
+            case 4: displayCircular(); break;
+            case 5: cout &lt;&lt; "\nReturning to Queue Selection...\n"; break;
+            default: cout &lt;&lt; "Invalid Choice!\n";
+        }
+    } while (choice != 5);
+}
+
+// PRIORITY QUEUE MENU
+void priorityMenu() {
+    int choice, num;
+
+    do {
+        cout &lt;&lt; "\n================================\n";
+        cout &lt;&lt; "       PRIORITY QUEUE\n";
+        cout &lt;&lt; "================================\n";
+        cout &lt;&lt; "1. Enqueue\n2. Dequeue\n3. Peek\n4. Display\n5. Back to Queue Selection\n";
+        cout &lt;&lt; "================================\nChoice: ";
+        cin &gt;&gt; choice;
+
+        switch (choice) {
+            case 1:
+                cout &lt;&lt; "Enter number: ";
+                cin &gt;&gt; num;
+                enqueuePriority(num);
+                break;
+            case 2: dequeuePriority(); break;
+            case 3: peekPriority(); break;
+            case 4: displayPriority(); break;
+            case 5: cout &lt;&lt; "\nReturning to Queue Selection...\n"; break;
+            default: cout &lt;&lt; "Invalid Choice!\n";
+        }
+    } while (choice != 5);
+}
+
+// MAIN PROGRAM
+int main() {
+    int type;
+
+    do {
+        cout &lt;&lt; "\n\n========================================\n";
+        cout &lt;&lt; "       QUEUE DATA STRUCTURES\n";
+        cout &lt;&lt; "========================================\n";
+        cout &lt;&lt; "1. Linear Queue\n2. Circular Queue\n3. Priority Queue\n4. Exit\n";
+        cout &lt;&lt; "========================================\nChoose Queue Type: ";
+        cin &gt;&gt; type;
+
+        if (type == 1) {
+            if (linearRear &lt; linearFront) {
+                createLinear();
+            } else {
+                cout &lt;&lt; "\n===== LINEAR QUEUE =====\nExisting queue found.\n";
+                displayLinear();
+            }
+            linearMenu();
+
+        } else if (type == 2) {
+            if (circularCount == 0) {
+                createCircular();
+            } else {
+                cout &lt;&lt; "\n===== CIRCULAR QUEUE =====\nExisting queue found.\n";
+                displayCircular();
+            }
+            circularMenu();
+
+        } else if (type == 3) {
+            if (priorityRear &lt; priorityFront) {
+                createPriority();
+            } else {
+                cout &lt;&lt; "\n===== PRIORITY QUEUE =====\nExisting queue found.\n";
+                displayPriority();
+            }
+            priorityMenu();
+
+        } else if (type == 4) {
+            cout &lt;&lt; "\nProgram Ended.\n";
+        } else {
+            cout &lt;&lt; "\nInvalid Choice!\n";
+        }
+
+    } while (type != 4);
+
+    return 0;
+}</pre></div>
+
+<div class="output-box">
+<h3 class="section-title">Sample Output</h3>
+<pre>QUEUE DATA STRUCTURES
+1. Linear Queue
+2. Circular Queue
+3. Priority Queue
+4. Exit
+
+Sample Linear Queue:
+Enter 5 numbers:
+10 20 30 40 50
+5 numbers successfully entered!
+Queue: 10 20 30 40 50
+Front: 10
+Removed: 10
+Queue: 20 30 40 50
+
+Sample Circular Queue:
+Enter 5 numbers:
+10 20 30 40 50
+Queue: 10 20 30 40 50
+Front: 10
+Removed: 10
+Queue: 20 30 40 50
+
+Sample Priority Queue:
+Enter 5 numbers:
+10 30 20 50 40
+Priority Queue: 50 40 30 20 10
+Highest Priority: 50
+Removed: 50
+Priority Queue: 40 30 20 10
+
+Choose Queue Type: 4
+Program Ended.</pre>
+</div>
+</section>
+
+<p class="note">
+    Note: This webpage displays the C++ source code and sample output.
+    It does not compile or run C++ code in the browser.
+</p>
+
+</main>
+</body>
+  </html>
